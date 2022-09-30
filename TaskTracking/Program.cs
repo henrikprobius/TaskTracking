@@ -1,3 +1,8 @@
+
+using Microsoft.EntityFrameworkCore;
+using TaskTracking.Database;
+using TaskTrackingService.Model;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +12,31 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+//hur läsa från Secrets.json??
+//var movieApiKey = builder.Configuration["LocalSQLExpress"];
+//https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows&viewFallbackFrom=aspnetcore-2.2
+builder.Services.AddDbContext<TaskTracking.Database.DatabaseContext>(dbContextOptions => dbContextOptions.UseSqlServer(@"Server=localhost\sqlexpress;Database=TaskTracker;Trusted_Connection=True;MultipleActiveResultSets=true"));
+
+//builder.Services.AddScoped<IDatastore, Datastore>();// scoped is once per request
+
+//builder.Services.AddScoped<TaskTracking.Database.DatabaseContext>();// scoped is once per request
+
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    using (DatabaseContext c = new DatabaseContext())
+    {
+        c.DropAndCreatedDB();
+        Datastore s = new Datastore(c);
+        s.TestInserts();
+
+
+    }
+}
+
+    
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -15,6 +44,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 
