@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace TaskTracking.Model
 {
@@ -21,12 +22,18 @@ namespace TaskTracking.Model
         [Key]
         public Guid Id { get; set; } = Guid.Empty;
 
+       /* [DataMember]
+        [Required(ErrorMessage = "Price is required")]
+        [Range(0.01, 100.00,
+        ErrorMessage = "Price must be between 0.01 and 100.00")]
+       */
+
         [Required]
         [StringLength(50)]
         public string Title { get; set; }
 
         //will be nvarchar(max) be default ion SQL
-        public string Description { get; set; }
+        public string Description { get; set; } = String.Empty; 
 
         [Required]
         public DateTime? Created { get; set; }
@@ -35,6 +42,7 @@ namespace TaskTracking.Model
         public DateTime DueDate { get; set; }
 
         [Required]
+        [Column(TypeName = "int")]
         public TaskStatus Status {
 
             get
@@ -48,7 +56,6 @@ namespace TaskTracking.Model
                 status = value;
             }
         }
-
 
         public Project? Project { get; set; }
 
@@ -91,5 +98,5 @@ namespace TaskTracking.Model
         Closed = 4,
 
 
-    }// enum Brand
+    }// enum TaskStatus
 }

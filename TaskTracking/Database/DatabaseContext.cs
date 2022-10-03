@@ -1,32 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using TaskTracking.Model;
 
 namespace TaskTracking.Database
 {
     public class DatabaseContext:DbContext
     {
-        public DatabaseContext(DbContextOptionsBuilder opt)
-        {
-            opt.UseSqlServer(@"Server=localhost\sqlexpress;Database=TaskTracker;Trusted_Connection=True;MultipleActiveResultSets=true");
-        }
-
         public DatabaseContext()
         {
-           
+            //opt.UseSqlServer(@"Server=localhost\sqlexpress;Database=TaskTracker;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
+
 
         public DbSet<MyTask>? Tasks { get; set; }
         public DbSet<Project>? Projects { get; set; }
 
 
-        public async void DropAndCreatedDB()
+        public void DropAndCreateDB()
         {
-            bool deleted = await this.Database.EnsureDeletedAsync();
+            bool deleted = this.Database.EnsureDeleted();
             Console.WriteLine($"DB deleted = {deleted}");
-
-            bool created = await this.Database.EnsureCreatedAsync();
+            
+            bool created = this.Database.EnsureCreated();
             Console.WriteLine($"DB created = {created}");
+            
 
         }
 
@@ -34,6 +30,13 @@ namespace TaskTracking.Database
         {
             opt.UseSqlServer(@"Server=localhost\sqlexpress;Database=TaskTracker;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
+
+      /*  protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<MyTask>().Property(m => m.Status).HasColumnType("int");
+            base.OnModelCreating(modelBuilder);
+        }
+      */
 
     }
 }

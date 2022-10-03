@@ -12,7 +12,7 @@ namespace TaskTrackingService.Model
 
         public Datastore(TaskTracking.Database.DatabaseContext context)
         {
-
+            Console.WriteLine("Constructor injection in Datastore class");
             _context = context ?? throw new ArgumentNullException("null in Datastore contructor"); 
         }
 
@@ -29,6 +29,25 @@ namespace TaskTrackingService.Model
             return (true, "OK");
          }
 
+        public (bool, string) AddProject(Project proj)
+        {
+            proj.Id = Guid.NewGuid();
+            _context.Projects.Add(proj);
+            if (_context.SaveChanges() < 1) return (false, "could not save created Project into DB");
+
+            return (true, "OK");
+        }
+
+        public List<Project> GetAllProjects()
+        {
+            return _context.Projects.ToList();  
+        }
+
+        public List<MyTask> GetAllTasks()
+        {
+            //db.Tasks.Include(o => o.Person).Single(o => o.person_id == personId);
+            return _context.Tasks.Include(o => o.Project).ToList();
+        }
 
         public (bool, string) UpdateTask(MyTask task)
         {
@@ -45,6 +64,13 @@ namespace TaskTrackingService.Model
             return _context.Tasks.FirstOrDefault(c => c.Id == guid);
         }
 
+        public Project GetProject(Guid guid)
+        {
+            return _context.Projects.FirstOrDefault(c => c.Id == guid);
+        }
+
+
+        /********** Test Area ***********/
         public void TestInserts()
         {
             Console.WriteLine();

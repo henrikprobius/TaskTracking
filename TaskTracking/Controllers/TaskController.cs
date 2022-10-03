@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using TaskTracking.Model;
+using TaskTrackingService.Model;
 
 namespace TaskTracking.Controllers
 {
@@ -11,16 +13,20 @@ namespace TaskTracking.Controllers
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-        private readonly ILogger<TaskController> _logger;
+        private readonly IDatastore _store;
 
-        public TaskController(ILogger<TaskController> logger)
+        public TaskController(IDatastore store)
         {
-            _logger = logger;
+            _store = store;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            TaskTrackingService.Test.Test y = new(_store);
+            //y.TestProjectsInserts();
+            //y.TestTasksInserts();
+            y.TestTaskGet();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
@@ -29,5 +35,8 @@ namespace TaskTracking.Controllers
             })
             .ToArray();
         }
+
+
+
     }
 }
