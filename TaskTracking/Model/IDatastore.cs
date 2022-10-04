@@ -13,7 +13,9 @@ namespace TaskTrackingService.Model
         MyTask? GetTask(Guid guid);
         Project GetProject(Guid guid);
 
-        List<Project> GetAllProjects();
-        List<MyTask> GetAllTasks();
+        Task<List<Project>> GetAllProjects();
+
+        Task<List<MyTask>> GetAllTasks();
+        Task<List<MyTask>> GetAllActiveTasks();
     }
 }

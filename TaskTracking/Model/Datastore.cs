@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using TaskTracking.Database;
+
 using TaskTracking.Model;
 
 namespace TaskTrackingService.Model
@@ -38,30 +38,39 @@ namespace TaskTrackingService.Model
             return (true, "OK");
         }
 
-        public List<Project> GetAllProjects()
+        public async Task<List<Project>> GetAllProjects()
         {
-            return _context.Projects.ToList();  
+            return await _context.Projects.OrderBy(c => c.Name).ToListAsync();  
         }
 
-        public List<MyTask> GetAllTasks()
+        public async Task<List<MyTask>> GetAllTasks()
         {
-            //db.Tasks.Include(o => o.Person).Single(o => o.person_id == personId);
-            return _context.Tasks.Include(o => o.Project).ToList();
+            return await _context.Tasks.Include(o => o.Project).ToListAsync();
+        }
+
+        public async Task<List<MyTask>> GetAllActiveTasks()
+        {
+            return await _context.Tasks.Include(o => o.Project).Where(o =>o.Status != TaskTracking.Model.TaskStatus.Closed).ToListAsync();
         }
 
         public (bool, string) UpdateTask(MyTask task)
-        {
-            var t = _context.Tasks.FirstOrDefault(c => c.Id == task.Id);
-            if (t != null) return (false, "Id is not in DB");
+        {         
+            var t = this.GetTask(task.Id);
+            if (t == null) return (false, "Invalid Id");
+            
             t = t + task;  //update db object with values from parameter
+
             if (_context.SaveChanges() < 1) return (false, "could not save an updated Task in DB");
 
             return (true, "OK");
+
+
         }
 
         public MyTask GetTask(Guid guid)
         {
-            return _context.Tasks.FirstOrDefault(c => c.Id == guid);
+            return _context.Tasks.Include(o => o.Project).FirstOrDefault(c => c.Id == guid);
+     
         }
 
         public Project GetProject(Guid guid)
@@ -69,28 +78,6 @@ namespace TaskTrackingService.Model
             return _context.Projects.FirstOrDefault(c => c.Id == guid);
         }
 
-
-        /********** Test Area ***********/
-        public void TestInserts()
-        {
-            Console.WriteLine();
-            Console.WriteLine("******* Testing inserts *******");
-            (bool success, string msg) ret;
-            MyTask t = new MyTask("Title1", "Descr1", DateTime.Now.AddDays(60));
-
-            ret = AddTask(t);
-            Console.WriteLine($"Adding new Task. Success = {ret.success}, Message = {ret.msg}");
-
-
-            t = new MyTask("Title2", "Descr2", DateTime.Now.AddDays(90));
-            ret = AddTask(t);
-            Console.WriteLine($"Adding new Task. Success = {ret.success}, Message = {ret.msg}");
-
-            t = new MyTask("Title3", "Descr2", DateTime.Now.AddDays(80));
-            ret = AddTask(t);
-            Console.WriteLine($"Adding new Task. Success = {ret.success}, Message = {ret.msg}");
-            Console.WriteLine();
-        }
     }
 }
 

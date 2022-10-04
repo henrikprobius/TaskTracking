@@ -14,7 +14,7 @@ namespace TaskTrackingService.Test
         {
             Console.WriteLine();
             Console.WriteLine("------- TestTasks Inserts --->");
-            var projs = _store.GetAllProjects();
+            var projs = _store.GetAllProjects().Result.ToArray();
             (bool success, string msg) ret;
             MyTask t = new MyTask("Title1", "Descr1", DateTime.Now.AddDays(60));
             t.Project = projs[0];
@@ -54,7 +54,7 @@ namespace TaskTrackingService.Test
             Console.WriteLine();
         }
 
-        public void TestTaskGet()
+       /* public void TestTaskGet()
         {
             Console.WriteLine();
             Console.WriteLine("------- Test getting tasks --->");
@@ -65,6 +65,37 @@ namespace TaskTrackingService.Test
                 else
                     Console.WriteLine($"TaskName: {item.Title} has project {item.Project.Name} and status {item.Status}");
             }
+            Console.WriteLine();
+
+        }*/
+
+
+        public void TestTaskUpdate()
+        {
+            Console.WriteLine();
+            Console.WriteLine("------- Test task update --->");
+            MyTask t = new MyTask("Title1UPDATE2", "Descr1UPDATE2", DateTime.Now.AddDays(100));
+            t.Id = new Guid("E2BF3914-F6C0-4775-888A-83B2F5651D1B");
+            //t.Project = _store.GetAllProjects()[1];
+            t.Project = null;
+            (bool success, string msg) ret;
+            ret = _store.UpdateTask(t);
+            Console.WriteLine($"Updating existing Task. Success = {ret.success}, Message = {ret.msg}");
+            Console.WriteLine();
+
+        }
+
+        public void TestTaskUpdateClose()
+        {
+            Console.WriteLine();
+            Console.WriteLine("------- Test task update with close --->");
+            MyTask t = new MyTask("Title1UPDATE1", "Descr1UPDATE1", DateTime.Now.AddDays(100));
+            t.Status = TaskTracking.Model.TaskStatus.Closed;
+            t.Id = new Guid("E2BF3914-F6C0-4775-888A-83B2F5651D1B");
+
+            (bool success, string msg) ret;
+            ret = _store.UpdateTask(t);
+            Console.WriteLine($"Updating existing Task. Success = {ret.success}, Message = {ret.msg}");
             Console.WriteLine();
 
         }
