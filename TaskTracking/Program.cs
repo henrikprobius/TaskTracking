@@ -5,6 +5,7 @@ using TaskTrackingService.Datastore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -19,6 +20,15 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddDbContext<TaskTracking.Database.DatabaseContext>(dbContextOptions => dbContextOptions.UseSqlServer(@"Server=localhost\sqlexpress;Database=TaskTracker;Trusted_Connection=True;MultipleActiveResultSets=true"));
 builder.Services.AddScoped<IDatastore, Datastore>();// scoped is once per request
 builder.Services.AddScoped<DatabaseContext>();// scoped is once per request
+
+builder.Services.AddControllers(options => {
+    //options.InputFormatters NOTE! first added formatter in list will be the default
+    options.ReturnHttpNotAcceptable = true;
+})
+    .AddNewtonsoftJson()   //, replaces the default json serializer, must import Nuget packages first
+    .AddXmlDataContractSerializerFormatters();// returns 406 Not Acceptable if requesting fx application/xml is in
+                                              // header and the service does not support that outputformat.
+                                              // also adding support for in/output xml
 
 var app = builder.Build();
     

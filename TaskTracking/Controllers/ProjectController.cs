@@ -20,6 +20,7 @@ namespace TaskTrackingService.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Project>>> GetAllProjects()
         {
+            Console.WriteLine("GetAllProjects --->");
             return Ok(await _store.GetAllProjects());
         }
     }
