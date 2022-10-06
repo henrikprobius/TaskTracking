@@ -5,6 +5,10 @@ VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTrackingService", "TaskTracking\TaskTrackingService.csproj", "{72039CE0-FC6A-453F-B5CA-4A82E71B6662}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTrackerModel", "..\TaskTrackerModel\TaskTrackerModel\TaskTrackerModel.csproj", "{6C038C41-CF34-43C0-BF54-538B0740CF47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTrackerClient", "..\BlazorApptest1\BlazorApptest1\TaskTrackerClient.csproj", "{744C7046-974A-4DD9-B25A-01C1D99B7DC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{72039CE0-FC6A-453F-B5CA-4A82E71B6662}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72039CE0-FC6A-453F-B5CA-4A82E71B6662}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72039CE0-FC6A-453F-B5CA-4A82E71B6662}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C038C41-CF34-43C0-BF54-538B0740CF47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C038C41-CF34-43C0-BF54-538B0740CF47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C038C41-CF34-43C0-BF54-538B0740CF47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C038C41-CF34-43C0-BF54-538B0740CF47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{744C7046-974A-4DD9-B25A-01C1D99B7DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{744C7046-974A-4DD9-B25A-01C1D99B7DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{744C7046-974A-4DD9-B25A-01C1D99B7DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{744C7046-974A-4DD9-B25A-01C1D99B7DC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

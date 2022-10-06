@@ -1,8 +1,6 @@
-﻿
+﻿using TaskTrackerModels;
 
-using TaskTracking.Model;
-
-namespace TaskTrackingService.Model
+namespace TaskTrackingService.Datastore
 {
     public interface IDatastore
     {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TaskTracking.Model;
-using TaskTrackingService.Model;
+using TaskTrackingService.Datastore;
+using TaskTrackerModels;
+
 
 namespace TaskTrackingService.Controllers
 {
@@ -16,8 +17,7 @@ namespace TaskTrackingService.Controllers
         }
 
 
-        [HttpGet()]
-        [Route("api/tasks/getallactivetasks")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Project>>> GetAllProjects()
         {
             return Ok(await _store.GetAllProjects());

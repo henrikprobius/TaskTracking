@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 
-using TaskTracking.Model;
+using TaskTrackerModels;
 
-namespace TaskTrackingService.Model
+namespace TaskTrackingService.Datastore
 {
     public class Datastore: IDatastore
     {
@@ -50,7 +49,7 @@ namespace TaskTrackingService.Model
 
         public async Task<List<MyTask>> GetAllActiveTasks()
         {
-            return await _context.Tasks.Include(o => o.Project).Where(o =>o.Status != TaskTracking.Model.TaskStatus.Closed).ToListAsync();
+            return await _context.Tasks.Include(o => o.Project).Where(o =>o.Status != TaskTrackerModels.TaskStatus.Closed).ToListAsync();
         }
 
         public (bool, string) UpdateTask(MyTask task)

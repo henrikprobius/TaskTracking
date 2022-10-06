@@ -1,17 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TaskTracking.Model;
-using TaskTrackingService.Model;
+using TaskTrackingService.Datastore;
+using TaskTrackerModels;
 
 namespace TaskTracking.Controllers
 {
     [ApiController]
-    //[Route("api/tasks")]
+    //[Authorize]
     public class TaskController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
 
         private readonly IDatastore _store;
 
@@ -21,21 +18,21 @@ namespace TaskTracking.Controllers
         }
 
 
-        [HttpGet()]
+        [HttpGet]
         [Route("api/tasks/getallactivetasks")]
         public async Task<ActionResult<IEnumerable<MyTask>>> GetAllActiveTasks()
         {
             return Ok(await _store.GetAllActiveTasks());
         }
 
-        [HttpGet()]
+        [HttpGet]
         [Route("api/tasks/getalltasks")]
         public async Task<ActionResult<IEnumerable<MyTask>>> GetAllTasks()
         {
             return Ok(await _store.GetAllTasks());
         }
 
-        [HttpGet("{Id:Guid}")]
+        [HttpGet()]
         [Route("api/tasks/gettask")]
         public ActionResult<MyTask> GetTask(Guid Id)
         {
@@ -50,10 +47,10 @@ namespace TaskTracking.Controllers
         [Route("api/tasks/addtask")]
         public IActionResult AddTask(MyTask task)
         {
+            if(task is null) return BadRequest("null in argument");   
             var tt = _store.AddTask(task);
-
-            //nedan ej färdig
-            return CreatedAtRoute(routeName: nameof(GetTask),routeValues: new { },value: tt);
+            if (!tt.Item1) return BadRequest("Failed to create a new task");
+            return CreatedAtRoute(routeName: nameof(GetTask),routeValues: new { Id=task.Id},value: tt);
         }
 
         [HttpPut()]

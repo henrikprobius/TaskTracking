@@ -1,13 +1,13 @@
 ﻿
-
-using TaskTracking.Model;
+using TaskTrackingService.Datastore;
+using TaskTrackerModels;
 
 namespace TaskTrackingService.Test
 {
     public class Test
     {
-        private TaskTrackingService.Model.IDatastore _store;
-        public Test(TaskTrackingService.Model.IDatastore store)
+        private IDatastore _store;
+        public Test(IDatastore store)
         { _store = store ?? throw new ArgumentNullException("null in Test-class"); }
 
         public void TestTasksInserts()
@@ -90,7 +90,7 @@ namespace TaskTrackingService.Test
             Console.WriteLine();
             Console.WriteLine("------- Test task update with close --->");
             MyTask t = new MyTask("Title1UPDATE1", "Descr1UPDATE1", DateTime.Now.AddDays(100));
-            t.Status = TaskTracking.Model.TaskStatus.Closed;
+            t.Status = TaskTrackerModels.TaskStatus.Closed;
             t.Id = new Guid("E2BF3914-F6C0-4775-888A-83B2F5651D1B");
 
             (bool success, string msg) ret;

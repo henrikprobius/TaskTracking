@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskTracking.Model;
+using TaskTrackerModels;
 
 namespace TaskTracking.Database
 {
     public class DatabaseContext:DbContext
     {
+
+        private string connstring = @"Server=localhost\sqlexpress;Database=TaskTracker;Trusted_Connection=True;MultipleActiveResultSets=true";
         public DatabaseContext()
         {
             //opt.UseSqlServer(@"Server=localhost\sqlexpress;Database=TaskTracker;Trusted_Connection=True;MultipleActiveResultSets=true");
@@ -23,12 +25,11 @@ namespace TaskTracking.Database
             bool created = this.Database.EnsureCreated();
             Console.WriteLine($"DB created = {created}");
             
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder opt)
         {
-            opt.UseSqlServer(@"Server=localhost\sqlexpress;Database=TaskTracker;Trusted_Connection=True;MultipleActiveResultSets=true");
+            opt.UseSqlServer(connstring);
         }
 
       /*  protected override void OnModelCreating(ModelBuilder modelBuilder)
