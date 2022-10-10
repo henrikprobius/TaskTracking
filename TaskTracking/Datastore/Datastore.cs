@@ -44,12 +44,12 @@ namespace TaskTrackingService.Datastore
 
         public async Task<List<MyTask>> GetAllTasks()
         {
-            return await _context.Tasks.Include(o => o.Project).ToListAsync();
+            return await _context.Tasks.Include(o => o.Project).OrderBy(o => o.DueDate).ToListAsync();
         }
 
         public async Task<List<MyTask>> GetAllActiveTasks()
         {
-            return await _context.Tasks.Include(o => o.Project).Where(o =>o.Status != TaskTrackerModels.TaskStatus.Closed).ToListAsync();
+            return await _context.Tasks.Include(o => o.Project).Where(o =>o.Status != TaskTrackerModels.TaskStatus.Closed).OrderBy(o => o.DueDate).ToListAsync();
         }
 
         public (bool, string) UpdateTask(MyTask task)

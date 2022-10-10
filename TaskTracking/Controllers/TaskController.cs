@@ -29,6 +29,7 @@ namespace TaskTracking.Controllers
         [Route("api/tasks/getalltasks")]
         public async Task<ActionResult<IEnumerable<MyTask>>> GetAllTasks()
         {
+            Console.WriteLine("GetAllTasks ---->");
             return Ok(await _store.GetAllTasks());
         }
 
@@ -47,6 +48,7 @@ namespace TaskTracking.Controllers
         [Route("api/tasks/addtask")]
         public IActionResult AddTask(MyTask task)
         {
+            Console.WriteLine("AddTask ---->");
             if(task is null) return BadRequest("null in argument");   
             var tt = _store.AddTask(task);
             if (!tt.Item1) return BadRequest("Failed to create a new task");
