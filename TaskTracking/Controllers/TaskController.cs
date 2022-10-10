@@ -34,12 +34,13 @@ namespace TaskTracking.Controllers
         }
 
         [HttpGet()]
-        [Route("api/tasks/gettask")]
+        [Route("api/tasks/gettask/{Id}")]
         public ActionResult<MyTask> GetTask(Guid Id)
         {
-            if (Id == Guid.Empty) return BadRequest();
+            Console.WriteLine("GetTask() ---->, id = " + Id.ToString());
+            if (Id == Guid.Empty) return BadRequest("Parameter is null or empty");
             var t = _store.GetTask(Id);
-            if (t == null) return NotFound();
+            if (t == null) return NotFound("Task not found");
             return Ok(t);
         }
 
@@ -48,15 +49,16 @@ namespace TaskTracking.Controllers
         [Route("api/tasks/addtask")]
         public IActionResult AddTask(MyTask task)
         {
-            Console.WriteLine("AddTask ---->");
+            Console.WriteLine("AddTask ---->, guid = " + task.Id.ToString());
             if(task is null) return BadRequest("null in argument");   
             var tt = _store.AddTask(task);
             if (!tt.Item1) return BadRequest("Failed to create a new task");
-            return CreatedAtRoute(routeName: nameof(GetTask),routeValues: new { Id=task.Id},value: tt);
+            return new NoContentResult();
+            //return CreatedAtRoute(routeName: nameof(GetTask),routeValues: new { Id=task.Id},value: tt);
         }
 
         [HttpPut()]
-        [Route("api/tasks/UpdateTask")]
+        [Route("api/tasks/updatetask")]
         public IActionResult UpdateTask(MyTask task)
         {
             var tt = _store.UpdateTask(task);

@@ -17,13 +17,19 @@ namespace TaskTrackingService.Datastore
 
 
         public (bool,string) AddTask(MyTask task)
-        {            
+        {
+            Console.WriteLine("Datastore.AddTask");
             task.Created = DateTime.Now;
             task.Id = Guid.NewGuid();
-            if (task.Created > task.DueDate) return (false, "date created cannot be larger than duedate");
+            if (task.Created > task.DueDate) return (false, "date created cannot be larger than DueDate");
 
+            //_context.Entry(task).State = EntityState.Detached;
             _context.Tasks.Add(task);
-            if(_context.SaveChanges() < 1) return (false, "could not save created Task into DB");
+            _context.ChangeTracker.Entries<Project>().ToList().ForEach(p => p.State = EntityState.Unchanged);
+           
+            
+                
+            if (_context.SaveChanges() < 1) return (false, "could not save created Task into DB");
             
             return (true, "OK");
          }
@@ -49,7 +55,9 @@ namespace TaskTrackingService.Datastore
 
         public async Task<List<MyTask>> GetAllActiveTasks()
         {
+
             return await _context.Tasks.Include(o => o.Project).Where(o =>o.Status != TaskTrackerModels.TaskStatus.Closed).OrderBy(o => o.DueDate).ToListAsync();
+
         }
 
         public (bool, string) UpdateTask(MyTask task)
