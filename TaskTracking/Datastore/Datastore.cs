@@ -61,6 +61,9 @@ namespace TaskTrackingService.Datastore
             var t = this.GetTask(task.Id);
             if (t == null) return (false, "Invalid Id");
             t.Status = task.Status;
+            t.DueDate = task.DueDate;
+            t.Title = task.Title;
+            t.Description = task.Description;
             
             //t = t + task;  //update db object with values from parameter
             //_context.ChangeTracker.Entries<Project>().ToList().ForEach(p => p.State = EntityState.Unchanged);
@@ -69,7 +72,6 @@ namespace TaskTrackingService.Datastore
             if (_context.SaveChanges() < 1) return (false, "could not save an updated Task in DB");
 
             return (true, "OK");
-
 
         }
 
