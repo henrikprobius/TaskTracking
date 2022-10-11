@@ -5,7 +5,6 @@ namespace TaskTrackingService.Datastore
 {
     public class Datastore: IDatastore
     {
-
         private TaskTracking.Database.DatabaseContext _context;
 
         public Datastore(TaskTracking.Database.DatabaseContext context)
@@ -24,9 +23,7 @@ namespace TaskTrackingService.Datastore
 
             //_context.Entry(task).State = EntityState.Detached;
             _context.Tasks.Add(task);
-            _context.ChangeTracker.Entries<Project>().ToList().ForEach(p => p.State = EntityState.Unchanged);
-           
-            
+            _context.ChangeTracker.Entries<Project>().ToList().ForEach(p => p.State = EntityState.Unchanged);   
                 
             if (_context.SaveChanges() < 1) return (false, "could not save created Task into DB");
             
